@@ -8834,6 +8834,10 @@ var _massung$elm_css$Css$Visited = {ctor: 'Visited'};
 var _massung$elm_css$Css$Link = {ctor: 'Link'};
 var _massung$elm_css$Css$Default = {ctor: 'Default'};
 var _massung$elm_css$Css$Any = {ctor: 'Any'};
+var _user$project$Main$docDic = 'https://simplingo.github.io/dicBeta2.1.doc';
+var _user$project$Main$gramer = 'https://simplingo.github.io/gramerBeta2.1.pdf';
+var _user$project$Main$simpleGramer = 'https://simplingo.github.io/doc/simplegramerBeta2.1.pdf';
+var _user$project$Main$jsonDic = 'https://simplingo.github.io/Beta2.1.json';
 var _user$project$Main$queryW = F2(
 	function (word, vocas) {
 		return A2(
@@ -8865,18 +8869,94 @@ var _user$project$Main$myStyle = _elm_lang$html$Html_Attributes$style(
 		[
 			{ctor: '_Tuple2', _0: 'width', _1: '100%'},
 			{ctor: '_Tuple2', _0: 'padding', _1: '10px 0'},
-			{ctor: '_Tuple2', _0: 'font-size', _1: '2em'},
 			{ctor: '_Tuple2', _0: 'text-align', _1: 'center'}
 		]));
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
+};
+var _user$project$Main$vocaViewC = function (voca) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('card blue-grey darken-1')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('pure-g card-content white-text')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('pure-u-9-24')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$span,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('card-title')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text(voca.spell)
+									]))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('pure-u-15-24')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$p,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text(voca.des)
+									]))
+							]))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('card-action')
+					]),
+				A2(
+					_elm_lang$core$List$map,
+					function (x) {
+						return A2(
+							_elm_lang$html$Html$div,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class('chip')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text(x)
+								]));
+					},
+					voca.root))
+			]));
 };
 var _user$project$Main$vocaView = function (voca) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html_Attributes$class('pure-g')
+				_elm_lang$html$Html_Attributes$class('pure-g z-depth-1')
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -8936,7 +9016,9 @@ var _user$project$Main$vocaView = function (voca) {
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
+					[
+						_elm_lang$html$Html_Attributes$class('divider')
+					]),
 				_elm_lang$core$Native_List.fromArray(
 					[]))
 			]));
@@ -8970,7 +9052,7 @@ var _user$project$Main$init = {
 	_1: _elm_lang$core$Platform_Cmd$none
 };
 var _user$project$Main$imports = _elm_lang$core$Native_List.fromArray(
-	['http://yui.yahooapis.com/pure/0.5.0/pure-min.css']);
+	['https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css', 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css']);
 var _user$project$Main$styleSheet = A2(
 	_massung$elm_css$Css$stylesheet,
 	_user$project$Main$imports,
@@ -8991,7 +9073,6 @@ var _user$project$Main$FetchSuccess = function (a) {
 	return {ctor: 'FetchSuccess', _0: a};
 };
 var _user$project$Main$queryWords = function (word) {
-	var dic = 'https://simplingo.github.io/Beta2.1.json';
 	return A3(
 		_elm_lang$core$Task$perform,
 		_user$project$Main$FetchFail,
@@ -9002,7 +9083,7 @@ var _user$project$Main$queryWords = function (word) {
 				_elm_lang$core$Json_Decode$map,
 				_user$project$Main$queryW(word),
 				_user$project$Main$dicDecoder),
-			dic));
+			_user$project$Main$jsonDic));
 };
 var _user$project$Main$update = F2(
 	function (msg, oldContent) {
@@ -9096,7 +9177,191 @@ var _user$project$Main$view = function (content) {
 							[
 								_elm_lang$html$Html_Attributes$class('pure-u-11-12')
 							]),
-						A2(_elm_lang$core$List$map, _user$project$Main$vocaView, content.result))
+						A2(_elm_lang$core$List$map, _user$project$Main$vocaViewC, content.result))
+					])),
+				A2(
+				_elm_lang$html$Html$footer,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('page-footer')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('container')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$div,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('row')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$div,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('col l6 s12')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(
+												_elm_lang$html$Html$h5,
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$class('white-text')
+													]),
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html$text('关于')
+													])),
+												A2(
+												_elm_lang$html$Html$p,
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$class('grey-text text-lighten-4')
+													]),
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html$text('Simplingo is a simple language.')
+													]))
+											])),
+										A2(
+										_elm_lang$html$Html$div,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('col l4 offset-l2 s12')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(
+												_elm_lang$html$Html$h5,
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$class('white-text')
+													]),
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html$text('Extra Links')
+													])),
+												A2(
+												_elm_lang$html$Html$ul,
+												_elm_lang$core$Native_List.fromArray(
+													[]),
+												_elm_lang$core$Native_List.fromArray(
+													[
+														A2(
+														_elm_lang$html$Html$li,
+														_elm_lang$core$Native_List.fromArray(
+															[]),
+														_elm_lang$core$Native_List.fromArray(
+															[
+																A2(
+																_elm_lang$html$Html$a,
+																_elm_lang$core$Native_List.fromArray(
+																	[
+																		_elm_lang$html$Html_Attributes$class('grey-text text-lighten-3'),
+																		_elm_lang$html$Html_Attributes$href(_user$project$Main$gramer)
+																	]),
+																_elm_lang$core$Native_List.fromArray(
+																	[
+																		_elm_lang$html$Html$text('Gramer')
+																	]))
+															])),
+														A2(
+														_elm_lang$html$Html$li,
+														_elm_lang$core$Native_List.fromArray(
+															[]),
+														_elm_lang$core$Native_List.fromArray(
+															[
+																A2(
+																_elm_lang$html$Html$a,
+																_elm_lang$core$Native_List.fromArray(
+																	[
+																		_elm_lang$html$Html_Attributes$class('grey-text text-lighten-3'),
+																		_elm_lang$html$Html_Attributes$href(_user$project$Main$simpleGramer)
+																	]),
+																_elm_lang$core$Native_List.fromArray(
+																	[
+																		_elm_lang$html$Html$text('Simple Gramer')
+																	]))
+															])),
+														A2(
+														_elm_lang$html$Html$li,
+														_elm_lang$core$Native_List.fromArray(
+															[]),
+														_elm_lang$core$Native_List.fromArray(
+															[
+																A2(
+																_elm_lang$html$Html$a,
+																_elm_lang$core$Native_List.fromArray(
+																	[
+																		_elm_lang$html$Html_Attributes$class('grey-text text-lighten-3'),
+																		_elm_lang$html$Html_Attributes$href(_user$project$Main$docDic)
+																	]),
+																_elm_lang$core$Native_List.fromArray(
+																	[
+																		_elm_lang$html$Html$text('Dictionary')
+																	]))
+															])),
+														A2(
+														_elm_lang$html$Html$li,
+														_elm_lang$core$Native_List.fromArray(
+															[]),
+														_elm_lang$core$Native_List.fromArray(
+															[
+																A2(
+																_elm_lang$html$Html$a,
+																_elm_lang$core$Native_List.fromArray(
+																	[
+																		_elm_lang$html$Html_Attributes$class('grey-text text-lighten-3'),
+																		_elm_lang$html$Html_Attributes$href(_user$project$Main$jsonDic)
+																	]),
+																_elm_lang$core$Native_List.fromArray(
+																	[
+																		_elm_lang$html$Html$text('Raw data')
+																	]))
+															]))
+													]))
+											]))
+									]))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('footer-copyright')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$div,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('container')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('© 2016 Simplingo'),
+										A2(
+										_elm_lang$html$Html$a,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('grey-text text-lighten-4 right'),
+												_elm_lang$html$Html_Attributes$href('#!')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('More Details')
+											]))
+									]))
+							]))
 					]))
 			]));
 };

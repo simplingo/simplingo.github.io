@@ -14,7 +14,10 @@ import Css
 
 
 imports =
-    [ "http://yui.yahooapis.com/pure/0.5.0/pure-min.css"
+    [ "https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css"
+    , "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css"
+      -- , "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"
+      -- , "https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
     ]
 
 
@@ -80,9 +83,43 @@ view content =
           -- , div [ myStyle ] [ text (String.reverse content.query) ]
         , div [ class "pure-g" ]
             [ div [ class "pure-u-1-12" ] []
-            , div [ class "pure-u-11-12" ] (List.map vocaView content.result)
+            , div [ class "pure-u-11-12" ] (List.map vocaViewC content.result)
             ]
           -- , trialView (decodeString dicDecoder """ [{"lab":false,"root":[],"fix":[],"spell":"beta","descript":"2.1  2016-7-24"},{"lab":false,"root":[],"fix":[],"spell":"A","descript":"prep. 到...；去...；给...；对...；对...（的利益有影响）"}] """)
+        , footer
+            [ class "page-footer" ]
+            [ div
+                [ class "container" ]
+                [ div
+                    [ class "row" ]
+                    [ div
+                        [ class "col l6 s12" ]
+                        [ h5
+                            [ class "white-text" ]
+                            [ text "关于" ]
+                        , p [ class "grey-text text-lighten-4" ] [ text "Simplingo is a simple language." ]
+                        ]
+                    , div
+                        [ class "col l4 offset-l2 s12" ]
+                        [ h5 [ class "white-text" ] [ text "Extra Links" ]
+                        , ul []
+                            [ li [] [ a [ class "grey-text text-lighten-3", href gramer ] [ text "Gramer" ] ]
+                            , li [] [ a [ class "grey-text text-lighten-3", href simpleGramer ] [ text "Simple Gramer" ] ]
+                            , li [] [ a [ class "grey-text text-lighten-3", href docDic ] [ text "Dictionary" ] ]
+                            , li [] [ a [ class "grey-text text-lighten-3", href jsonDic ] [ text "Raw data" ] ]
+                            ]
+                        ]
+                    ]
+                ]
+            , div
+                [ class "footer-copyright" ]
+                [ div
+                    [ class "container" ]
+                    [ text "© 2016 Simplingo"
+                    , a [ class "grey-text text-lighten-4 right", href "#!" ] [ text "More Details" ]
+                    ]
+                ]
+            ]
         ]
 
 
@@ -97,13 +134,29 @@ trialView rs =
 
 vocaView : Vocabulary -> Html Msg
 vocaView voca =
-    div [ class "pure-g" ]
+    div [ class "pure-g z-depth-1" ]
         [ div [ class "pure-u-9-24" ] [ div [ myStyle ] [ text voca.spell ] ]
         , div [ class "pure-u-15-24" ]
             [ h4 [] [ text voca.des ]
             , div [] (List.map (\x -> button [ class "pure-button" ] [ text x ]) voca.root)
             ]
-        , div [] []
+        , div [ class "divider" ] []
+        ]
+
+
+vocaViewC : Vocabulary -> Html Msg
+vocaViewC voca =
+    div [ class "card blue-grey darken-1" ]
+        [ div [ class "pure-g card-content white-text" ]
+            [ div [ class "pure-u-9-24" ] [ span [ class "card-title" ] [ {- i [ class "zmdi zmdi-invert-colors zmdi-hc-fw zmdi-hc-rotate-90" ] [], -} text voca.spell ] ]
+            , div [ class "pure-u-15-24" ]
+                [ -- i [ class "large material-icons" ] [ text "label_outline" ]
+                  p [] [ text voca.des ]
+                ]
+            ]
+        , div
+            [ class "card-action" ]
+            (List.map (\x -> div [ class "chip" ] [ text x ]) voca.root)
         ]
 
 
@@ -121,7 +174,7 @@ myStyle =
         [ ( "width", "100%" )
           -- , ( "height", "80px" )
         , ( "padding", "10px 0" )
-        , ( "font-size", "2em" )
+          -- , ( "font-size", "2em" )
         , ( "text-align", "center" )
         ]
 
@@ -154,13 +207,25 @@ vocaDecoder =
 
 queryWords : String -> Cmd Msg
 queryWords word =
-    let
-        dic =
-            "https://simplingo.github.io/Beta2.1.json"
-    in
-        Task.perform FetchFail FetchSuccess (Http.get (Json.Decode.map (queryW word) dicDecoder) dic)
+    Task.perform FetchFail FetchSuccess (Http.get (Json.Decode.map (queryW word) dicDecoder) jsonDic)
 
 
 queryW : String -> List Vocabulary -> List Vocabulary
 queryW word vocas =
     List.filter (\voca -> String.contains word voca.spell || String.contains word voca.des) vocas
+
+
+jsonDic =
+    "https://simplingo.github.io/Beta2.1.json"
+
+
+simpleGramer =
+    "https://simplingo.github.io/doc/simplegramerBeta2.1.pdf"
+
+
+gramer =
+    "https://simplingo.github.io/gramerBeta2.1.pdf"
+
+
+docDic =
+    "https://simplingo.github.io/dicBeta2.1.doc"
