@@ -54,7 +54,7 @@ update msg oldContent =
             ( { oldContent | query = toString e }, Cmd.none )
 
         FetchSuccess [] ->
-            ( { oldContent | query = "aaaaaaaaaa" }, Cmd.none )
+            ( { oldContent | query = "" }, Cmd.none )
 
         FetchSuccess vocas ->
             ( { oldContent | result = vocas }, Cmd.none )
@@ -67,9 +67,9 @@ update msg oldContent =
 view : Model -> Html Msg
 view content =
     div []
-        [ input [ placeholder "Text to reverse", onInput NewContent, myStyle ] []
+        [ input [ placeholder "Text de serci ", onInput NewContent, myStyle ] []
           -- , button [ onClick Search ] [ text "serci" ]
-        , div [ myStyle ] [ text (String.reverse content.query) ]
+          -- , div [ myStyle ] [ text (String.reverse content.query) ]
         , div [] (List.map vocaView content.result)
           -- , trialView (decodeString dicDecoder """ [{"lab":false,"root":[],"fix":[],"spell":"beta","descript":"2.1  2016-7-24"},{"lab":false,"root":[],"fix":[],"spell":"A","descript":"prep. 到...；去...；给...；对...；对...（的利益有影响）"}] """)
         ]
