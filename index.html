@@ -8519,6 +8519,321 @@ var _evancz$elm_http$Http$post = F3(
 			decoder,
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
+var _massung$elm_css$Css$style = F2(
+	function (attributes, sheet) {
+		return A3(
+			_elm_lang$html$Html$node,
+			'style',
+			attributes,
+			_elm_lang$core$Native_List.fromArray(
+				[sheet.node]));
+	});
+var _massung$elm_css$Css$importUrl = function (url) {
+	return _elm_lang$core$String$concat(
+		_elm_lang$core$Native_List.fromArray(
+			['@import url(', url, ');']));
+};
+var _massung$elm_css$Css$desc = function (_p0) {
+	return _elm_lang$core$String$concat(
+		A2(
+			_elm_lang$core$List$map,
+			function (_p1) {
+				var _p2 = _p1;
+				return _elm_lang$core$String$concat(
+					_elm_lang$core$Native_List.fromArray(
+						[_p2._0, ':', _p2._1, ';']));
+			},
+			_p0));
+};
+var _massung$elm_css$Css$pseudo = function (p) {
+	var _p3 = p;
+	switch (_p3.ctor) {
+		case 'Any':
+			return ':any';
+		case 'Default':
+			return ':default';
+		case 'Link':
+			return ':link';
+		case 'Visited':
+			return ':visited';
+		case 'Hover':
+			return ':hover';
+		case 'Active':
+			return ':active';
+		case 'Focus':
+			return ':focus';
+		case 'Target':
+			return ':target';
+		case 'Enabled':
+			return ':enabled';
+		case 'Disabled':
+			return ':disabled';
+		case 'Checked':
+			return ':checked';
+		case 'Indeterminate':
+			return ':indeterminate';
+		case 'Invalid':
+			return ':invalid';
+		case 'Valid':
+			return ':valid';
+		case 'Fullscreen':
+			return ':fullscreen';
+		case 'Root':
+			return ':root';
+		case 'Scope':
+			return ':scope';
+		case 'FirstChild':
+			return ':first-child';
+		case 'LastChild':
+			return ':last-child';
+		case 'NthChild':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				':nth-child(',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(_p3._0),
+					')'));
+		case 'NthLastChild':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				':nth-last-child(',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(_p3._0),
+					')'));
+		case 'NthOfType':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				':nth-of-type(',
+				A2(_elm_lang$core$Basics_ops['++'], _p3._0, ')'));
+		case 'NthLastOfType':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				':nth-last-of-type(',
+				A2(_elm_lang$core$Basics_ops['++'], _p3._0, ')'));
+		case 'FirstOfType':
+			return ':first-of-type';
+		case 'LastOfType':
+			return ':last-of-type';
+		case 'OnlyOfType':
+			return ':only-of-type';
+		case 'Lang':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				':lang(',
+				A2(_elm_lang$core$Basics_ops['++'], _p3._0, ')'));
+		case 'Dir':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				':dir(',
+				A2(_elm_lang$core$Basics_ops['++'], _p3._0, ')'));
+		case 'Empty':
+			return ':empty';
+		case 'Left':
+			return ':left';
+		case 'Right':
+			return ':right';
+		case 'FirstLetter':
+			return '::first-letter';
+		case 'FirstLine':
+			return '::first-line';
+		case 'Before':
+			return '::before';
+		case 'After':
+			return '::after';
+		case 'Selection':
+			return '::selection';
+		default:
+			return '::backdrop';
+	}
+};
+var _massung$elm_css$Css$sel = function (selector) {
+	var _p4 = selector;
+	switch (_p4.ctor) {
+		case 'Type':
+			return _p4._0;
+		case 'Id':
+			return A2(
+				_elm_lang$core$String$cons,
+				_elm_lang$core$Native_Utils.chr('#'),
+				_elm_lang$core$Basics$toString(_p4._0));
+		case 'Class':
+			return A2(
+				_elm_lang$core$String$cons,
+				_elm_lang$core$Native_Utils.chr('.'),
+				_elm_lang$core$Basics$toString(_p4._0));
+		case 'Descendant':
+			return A2(
+				_elm_lang$core$String$join,
+				' ',
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_massung$elm_css$Css$sel(_p4._1),
+						_massung$elm_css$Css$sel(_p4._0)
+					]));
+		case 'Child':
+			return A2(
+				_elm_lang$core$String$join,
+				' > ',
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_massung$elm_css$Css$sel(_p4._1),
+						_massung$elm_css$Css$sel(_p4._0)
+					]));
+		case 'Sibling':
+			return A2(
+				_elm_lang$core$String$join,
+				' ~ ',
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_massung$elm_css$Css$sel(_p4._1),
+						_massung$elm_css$Css$sel(_p4._0)
+					]));
+		case 'Adjacent':
+			return A2(
+				_elm_lang$core$String$join,
+				' + ',
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_massung$elm_css$Css$sel(_p4._1),
+						_massung$elm_css$Css$sel(_p4._0)
+					]));
+		default:
+			return _elm_lang$core$String$concat(
+				A2(
+					_elm_lang$core$List_ops['::'],
+					_massung$elm_css$Css$sel(_p4._1),
+					A2(_elm_lang$core$List$map, _massung$elm_css$Css$pseudo, _p4._0)));
+	}
+};
+var _massung$elm_css$Css$rule = function (rule) {
+	return _elm_lang$core$String$concat(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$core$String$join,
+				',',
+				A2(_elm_lang$core$List$map, _massung$elm_css$Css$sel, rule.selectors)),
+				'{',
+				_massung$elm_css$Css$desc(rule.descriptor),
+				'}'
+			]));
+};
+var _massung$elm_css$Css$stylesheet = F2(
+	function (urls, rules) {
+		return {
+			node: function (_p5) {
+				return _elm_lang$html$Html$text(
+					_elm_lang$core$String$concat(_p5));
+			}(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(_elm_lang$core$List$map, _massung$elm_css$Css$importUrl, urls),
+					A2(_elm_lang$core$List$map, _massung$elm_css$Css$rule, rules))),
+			id: function (_p6) {
+				return _elm_lang$html$Html_Attributes$id(
+					_elm_lang$core$Basics$toString(_p6));
+			},
+			$class: function (_p7) {
+				return _elm_lang$html$Html_Attributes$class(
+					_elm_lang$core$Basics$toString(_p7));
+			},
+			classes: function (_p8) {
+				return _elm_lang$html$Html_Attributes$class(
+					A2(
+						_elm_lang$core$String$join,
+						' ',
+						A2(_elm_lang$core$List$map, _elm_lang$core$Basics$toString, _p8)));
+			}
+		};
+	});
+var _massung$elm_css$Css$Stylesheet = F4(
+	function (a, b, c, d) {
+		return {node: a, id: b, $class: c, classes: d};
+	});
+var _massung$elm_css$Css$Rule = F2(
+	function (a, b) {
+		return {selectors: a, descriptor: b};
+	});
+var _massung$elm_css$Css$Pseudo = F2(
+	function (a, b) {
+		return {ctor: 'Pseudo', _0: a, _1: b};
+	});
+var _massung$elm_css$Css$Adjacent = F2(
+	function (a, b) {
+		return {ctor: 'Adjacent', _0: a, _1: b};
+	});
+var _massung$elm_css$Css$Sibling = F2(
+	function (a, b) {
+		return {ctor: 'Sibling', _0: a, _1: b};
+	});
+var _massung$elm_css$Css$Child = F2(
+	function (a, b) {
+		return {ctor: 'Child', _0: a, _1: b};
+	});
+var _massung$elm_css$Css$Descendant = F2(
+	function (a, b) {
+		return {ctor: 'Descendant', _0: a, _1: b};
+	});
+var _massung$elm_css$Css$Class = function (a) {
+	return {ctor: 'Class', _0: a};
+};
+var _massung$elm_css$Css$Id = function (a) {
+	return {ctor: 'Id', _0: a};
+};
+var _massung$elm_css$Css$Type = function (a) {
+	return {ctor: 'Type', _0: a};
+};
+var _massung$elm_css$Css$Backdrop = {ctor: 'Backdrop'};
+var _massung$elm_css$Css$Selection = {ctor: 'Selection'};
+var _massung$elm_css$Css$After = {ctor: 'After'};
+var _massung$elm_css$Css$Before = {ctor: 'Before'};
+var _massung$elm_css$Css$FirstLine = {ctor: 'FirstLine'};
+var _massung$elm_css$Css$FirstLetter = {ctor: 'FirstLetter'};
+var _massung$elm_css$Css$Dir = function (a) {
+	return {ctor: 'Dir', _0: a};
+};
+var _massung$elm_css$Css$Lang = function (a) {
+	return {ctor: 'Lang', _0: a};
+};
+var _massung$elm_css$Css$Right = {ctor: 'Right'};
+var _massung$elm_css$Css$Left = {ctor: 'Left'};
+var _massung$elm_css$Css$Empty = {ctor: 'Empty'};
+var _massung$elm_css$Css$OnlyOfType = {ctor: 'OnlyOfType'};
+var _massung$elm_css$Css$LastOfType = {ctor: 'LastOfType'};
+var _massung$elm_css$Css$FirstOfType = {ctor: 'FirstOfType'};
+var _massung$elm_css$Css$NthLastOfType = function (a) {
+	return {ctor: 'NthLastOfType', _0: a};
+};
+var _massung$elm_css$Css$NthOfType = function (a) {
+	return {ctor: 'NthOfType', _0: a};
+};
+var _massung$elm_css$Css$NthLastChild = function (a) {
+	return {ctor: 'NthLastChild', _0: a};
+};
+var _massung$elm_css$Css$NthChild = function (a) {
+	return {ctor: 'NthChild', _0: a};
+};
+var _massung$elm_css$Css$LastChild = {ctor: 'LastChild'};
+var _massung$elm_css$Css$FirstChild = {ctor: 'FirstChild'};
+var _massung$elm_css$Css$Scope = {ctor: 'Scope'};
+var _massung$elm_css$Css$Root = {ctor: 'Root'};
+var _massung$elm_css$Css$Fullscreen = {ctor: 'Fullscreen'};
+var _massung$elm_css$Css$Valid = {ctor: 'Valid'};
+var _massung$elm_css$Css$Invalid = {ctor: 'Invalid'};
+var _massung$elm_css$Css$Indeterminate = {ctor: 'Indeterminate'};
+var _massung$elm_css$Css$Checked = {ctor: 'Checked'};
+var _massung$elm_css$Css$Disabled = {ctor: 'Disabled'};
+var _massung$elm_css$Css$Enabled = {ctor: 'Enabled'};
+var _massung$elm_css$Css$Target = {ctor: 'Target'};
+var _massung$elm_css$Css$Focus = {ctor: 'Focus'};
+var _massung$elm_css$Css$Active = {ctor: 'Active'};
+var _massung$elm_css$Css$Hover = {ctor: 'Hover'};
+var _massung$elm_css$Css$Visited = {ctor: 'Visited'};
+var _massung$elm_css$Css$Link = {ctor: 'Link'};
+var _massung$elm_css$Css$Default = {ctor: 'Default'};
+var _massung$elm_css$Css$Any = {ctor: 'Any'};
 var _user$project$Main$queryW = F2(
 	function (word, vocas) {
 		return A2(
@@ -8542,11 +8857,13 @@ var _user$project$Main$vocaDecoder = A5(
 		_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)),
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'lab', _elm_lang$core$Json_Decode$bool));
 var _user$project$Main$dicDecoder = _elm_lang$core$Json_Decode$list(_user$project$Main$vocaDecoder);
+var _user$project$Main$myStyle$ = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[]));
 var _user$project$Main$myStyle = _elm_lang$html$Html_Attributes$style(
 	_elm_lang$core$Native_List.fromArray(
 		[
 			{ctor: '_Tuple2', _0: 'width', _1: '100%'},
-			{ctor: '_Tuple2', _0: 'height', _1: '40px'},
 			{ctor: '_Tuple2', _0: 'padding', _1: '10px 0'},
 			{ctor: '_Tuple2', _0: 'font-size', _1: '2em'},
 			{ctor: '_Tuple2', _0: 'text-align', _1: 'center'}
@@ -8558,30 +8875,70 @@ var _user$project$Main$vocaView = function (voca) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_lang$html$Html_Attributes$class('pure-g')
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_elm_lang$html$Html$h2,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
+				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text(voca.spell)
-					])),
-				A2(
-				_elm_lang$html$Html$h4,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
+						_elm_lang$html$Html_Attributes$class('pure-u-9-24')
+					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text(voca.des)
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[_user$project$Main$myStyle]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(voca.spell)
+							]))
 					])),
 				A2(
-				_elm_lang$html$Html$h5,
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('pure-u-15-24')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$h4,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(voca.des)
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						A2(
+							_elm_lang$core$List$map,
+							function (x) {
+								return A2(
+									_elm_lang$html$Html$button,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html_Attributes$class('pure-button')
+										]),
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html$text(x)
+										]));
+							},
+							voca.root))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
 					[]),
-				A2(_elm_lang$core$List$map, _elm_lang$html$Html$text, voca.root))
+				_elm_lang$core$Native_List.fromArray(
+					[]))
 			]));
 };
 var _user$project$Main$trialView = function (rs) {
@@ -8612,6 +8969,13 @@ var _user$project$Main$init = {
 	},
 	_1: _elm_lang$core$Platform_Cmd$none
 };
+var _user$project$Main$imports = _elm_lang$core$Native_List.fromArray(
+	['http://yui.yahooapis.com/pure/0.5.0/pure-min.css']);
+var _user$project$Main$styleSheet = A2(
+	_massung$elm_css$Css$stylesheet,
+	_user$project$Main$imports,
+	_elm_lang$core$Native_List.fromArray(
+		[]));
 var _user$project$Main$Model = F2(
 	function (a, b) {
 		return {query: a, result: b};
@@ -8664,23 +9028,13 @@ var _user$project$Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
-				if (_p1._0.ctor === '[]') {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							oldContent,
-							{query: ''}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							oldContent,
-							{result: _p1._0}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				}
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						oldContent,
+						{result: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 		}
 	});
 var _user$project$Main$NewContent = function (a) {
@@ -8694,20 +9048,56 @@ var _user$project$Main$view = function (content) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_elm_lang$html$Html$input,
+				_massung$elm_css$Css$style,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$placeholder('Text de serci '),
-						_elm_lang$html$Html_Events$onInput(_user$project$Main$NewContent),
-						_user$project$Main$myStyle
+						_elm_lang$html$Html_Attributes$scoped(true)
+					]),
+				_user$project$Main$styleSheet),
+				A2(
+				_elm_lang$html$Html$form,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('pure-form')
 					]),
 				_elm_lang$core$Native_List.fromArray(
-					[])),
+					[
+						A2(
+						_elm_lang$html$Html$input,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$placeholder('Texto de serci '),
+								_elm_lang$html$Html_Events$onInput(_user$project$Main$NewContent),
+								_user$project$Main$myStyle,
+								_elm_lang$html$Html_Attributes$class('pure-input-rounded')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[]))
+					])),
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
-				A2(_elm_lang$core$List$map, _user$project$Main$vocaView, content.result))
+					[
+						_elm_lang$html$Html_Attributes$class('pure-g')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('pure-u-1-12')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('pure-u-11-12')
+							]),
+						A2(_elm_lang$core$List$map, _user$project$Main$vocaView, content.result))
+					]))
 			]));
 };
 var _user$project$Main$main = {

@@ -10,6 +10,16 @@ import Http
 import Task
 import List
 import String
+import Css
+
+
+imports =
+    [ "http://yui.yahooapis.com/pure/0.5.0/pure-min.css"
+    ]
+
+
+styleSheet =
+    Css.stylesheet imports []
 
 
 main =
@@ -53,9 +63,6 @@ update msg oldContent =
         FetchFail e ->
             ( { oldContent | query = toString e }, Cmd.none )
 
-        FetchSuccess [] ->
-            ( { oldContent | query = "" }, Cmd.none )
-
         FetchSuccess vocas ->
             ( { oldContent | result = vocas }, Cmd.none )
 
@@ -67,10 +74,14 @@ update msg oldContent =
 view : Model -> Html Msg
 view content =
     div []
-        [ input [ placeholder "Text de serci ", onInput NewContent, myStyle ] []
+        [ Css.style [ Html.Attributes.scoped True ] styleSheet
+        , Html.form [ class "pure-form" ] [ input [ placeholder "Texto de serci ", onInput NewContent, myStyle, class "pure-input-rounded" ] [] ]
           -- , button [ onClick Search ] [ text "serci" ]
           -- , div [ myStyle ] [ text (String.reverse content.query) ]
-        , div [] (List.map vocaView content.result)
+        , div [ class "pure-g" ]
+            [ div [ class "pure-u-1-12" ] []
+            , div [ class "pure-u-11-12" ] (List.map vocaView content.result)
+            ]
           -- , trialView (decodeString dicDecoder """ [{"lab":false,"root":[],"fix":[],"spell":"beta","descript":"2.1  2016-7-24"},{"lab":false,"root":[],"fix":[],"spell":"A","descript":"prep. 到...；去...；给...；对...；对...（的利益有影响）"}] """)
         ]
 
@@ -86,10 +97,13 @@ trialView rs =
 
 vocaView : Vocabulary -> Html Msg
 vocaView voca =
-    div []
-        [ h2 [] [ text voca.spell ]
-        , h4 [] [ text voca.des ]
-        , h5 [] (List.map text voca.root)
+    div [ class "pure-g" ]
+        [ div [ class "pure-u-9-24" ] [ div [ myStyle ] [ text voca.spell ] ]
+        , div [ class "pure-u-15-24" ]
+            [ h4 [] [ text voca.des ]
+            , div [] (List.map (\x -> button [ class "pure-button" ] [ text x ]) voca.root)
+            ]
+        , div [] []
         ]
 
 
@@ -105,11 +119,15 @@ subscriptions model =
 myStyle =
     style
         [ ( "width", "100%" )
-        , ( "height", "40px" )
+          -- , ( "height", "80px" )
         , ( "padding", "10px 0" )
         , ( "font-size", "2em" )
         , ( "text-align", "center" )
         ]
+
+
+myStyle' =
+    style []
 
 
 type alias Vocabulary =
