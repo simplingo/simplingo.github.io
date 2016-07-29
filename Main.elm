@@ -91,7 +91,7 @@ view content =
           -- , div [ myStyle ] [ text (String.reverse content.query) ]
         , div [ class "pure-g" ]
             [ div [ class "pure-u-1-12" ] []
-            , div [ class "pure-u-11-12" ] (List.map vocaViewC content.result)
+            , div [ class "pure-u-11-12" ] [ div [ class "row" ] (List.map vocaViewC content.result) ]
             ]
           -- , trialView (decodeString dicDecoder """ [{"lab":false,"root":[],"fix":[],"spell":"beta","descript":"2.1  2016-7-24"},{"lab":false,"root":[],"fix":[],"spell":"A","descript":"prep. 到...；去...；给...；对...；对...（的利益有影响）"}] """)
         , myfooter
@@ -110,15 +110,15 @@ myfooter =
                     [ class "col l6 s12" ]
                     [ h5
                         [ class "white-text" ]
-                        [ text "关于" ]
+                        [ text "About" ]
                     , p [ class "grey-text text-lighten-4" ] [ text "Simplingo is a simple language." ]
                     ]
                 , div
                     [ class "col l4 offset-l2 s12" ]
                     [ h5 [ class "white-text" ] [ text "Extra Links" ]
                     , ul []
-                        [ li [] [ a [ class "grey-text text-lighten-3", href gramer ] [ text "Gramer" ] ]
-                        , li [] [ a [ class "grey-text text-lighten-3", href simpleGramer ] [ text "Simple Gramer" ] ]
+                        [ li [] [ a [ class "grey-text text-lighten-3", href gramer ] [ text "Grammar" ] ]
+                        , li [] [ a [ class "grey-text text-lighten-3", href simpleGramer ] [ text "Simple Grammar" ] ]
                         , li [] [ a [ class "grey-text text-lighten-3", href docDic ] [ text "Dictionary" ] ]
                         , li [] [ a [ class "grey-text text-lighten-3", href jsonDic ] [ text "Raw data" ] ]
                         ]
@@ -159,17 +159,19 @@ vocaView voca =
 
 vocaViewC : Vocabulary -> Html Msg
 vocaViewC voca =
-    div [ class "card blue-grey darken-1 z-depth-1" ]
-        [ div [ class "pure-g card-content white-text" ]
-            [ div [ class "pure-u-9-24" ] [ span [ class "card-title" ] [ {- i [ class "zmdi zmdi-invert-colors zmdi-hc-fw zmdi-hc-rotate-90" ] [], -} text voca.spell ] ]
-            , div [ class "pure-u-15-24" ]
-                [ -- i [ class "large material-icons" ] [ text "label_outline" ]
-                  p [] [ text voca.des ]
+    div [ class "col s6" ]
+        [ div [ class "card blue-grey darken-1 z-depth-1" ]
+            [ div [ class "pure-g card-content white-text" ]
+                [ div [ class "pure-u-9-24" ] [ span [ class "card-title" ] [ {- i [ class "zmdi zmdi-invert-colors zmdi-hc-fw zmdi-hc-rotate-90" ] [], -} text voca.spell ] ]
+                , div [ class "pure-u-15-24" ]
+                    [ -- i [ class "large material-icons" ] [ text "label_outline" ]
+                      p [] [ text voca.des ]
+                    ]
                 ]
+            , div
+                [ class "card-action" ]
+                (List.map (\x -> div [ class "chip" ] [ text x ]) voca.root)
             ]
-        , div
-            [ class "card-action" ]
-            (List.map (\x -> div [ class "chip" ] [ text x ]) voca.root)
         ]
 
 
@@ -233,11 +235,11 @@ jsonDic =
 
 
 simpleGramer =
-    "https://simplingo.github.io/doc/simplegramerBeta2.1.pdf"
+    "https://simplingo.github.io/doc/simplegrammarBeta2.1.pdf"
 
 
 gramer =
-    "https://simplingo.github.io/doc/gramerBeta2.1.pdf"
+    "https://simplingo.github.io/doc/grammarBeta2.1.pdf"
 
 
 docDic =
