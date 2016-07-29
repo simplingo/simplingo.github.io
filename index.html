@@ -8840,12 +8840,45 @@ var _user$project$Main$simpleGramer = 'https://simplingo.github.io/doc/simplegra
 var _user$project$Main$jsonDic = 'https://simplingo.github.io/Beta2.1.json';
 var _user$project$Main$queryW = F2(
 	function (word, vocas) {
-		return A2(
+		var unfirstWord = A2(
 			_elm_lang$core$List$filter,
 			function (voca) {
-				return A2(_elm_lang$core$String$contains, word, voca.spell) || A2(_elm_lang$core$String$contains, word, voca.des);
+				return _elm_lang$core$Basics$not(
+					A2(
+						_elm_lang$core$String$startsWith,
+						_elm_lang$core$String$toLower(word),
+						_elm_lang$core$String$toLower(voca.spell)));
 			},
 			vocas);
+		var firstWord = A2(
+			_elm_lang$core$List$filter,
+			function (voca) {
+				return A2(
+					_elm_lang$core$String$startsWith,
+					_elm_lang$core$String$toLower(word),
+					_elm_lang$core$String$toLower(voca.spell));
+			},
+			vocas);
+		var qwords = _elm_lang$core$String$words(
+			_elm_lang$core$String$toLower(word));
+		var relateCheck = function (voc) {
+			return A2(
+				_elm_lang$core$List$all,
+				function (w) {
+					return A2(
+						_elm_lang$core$String$contains,
+						w,
+						_elm_lang$core$String$toLower(voc.spell)) || A2(_elm_lang$core$String$contains, w, voc.des);
+				},
+				qwords);
+		};
+		var relateWord = A2(
+			_elm_lang$core$List$filter,
+			function (voca) {
+				return relateCheck(voca);
+			},
+			unfirstWord);
+		return A2(_elm_lang$core$List$append, firstWord, relateWord);
 	});
 var _user$project$Main$vocaDecoder = A5(
 	_elm_lang$core$Json_Decode$object4,
@@ -8880,15 +8913,15 @@ var _user$project$Main$vocaViewC = function (voca) {
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html_Attributes$class('col s6')
+				_elm_lang$html$Html_Attributes$class('col s6 ')
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_elm_lang$html$Html$div,
+				_elm_lang$html$Html$blockquote,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$class('card blue-grey darken-1 z-depth-1')
+						_elm_lang$html$Html_Attributes$class('red lighten-2')
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
@@ -8896,7 +8929,7 @@ var _user$project$Main$vocaViewC = function (voca) {
 						_elm_lang$html$Html$div,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$class('pure-g card-content white-text')
+								_elm_lang$html$Html_Attributes$class('card blue-grey darken-1 hoverable')
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
@@ -8904,60 +8937,84 @@ var _user$project$Main$vocaViewC = function (voca) {
 								_elm_lang$html$Html$div,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html_Attributes$class('pure-u-9-24')
+										_elm_lang$html$Html_Attributes$class('pure-g card-content white-text')
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
 										A2(
-										_elm_lang$html$Html$span,
+										_elm_lang$html$Html$div,
 										_elm_lang$core$Native_List.fromArray(
 											[
-												_elm_lang$html$Html_Attributes$class('card-title')
+												_elm_lang$html$Html_Attributes$class('pure-u-9-24')
 											]),
 										_elm_lang$core$Native_List.fromArray(
 											[
-												_elm_lang$html$Html$text(voca.spell)
+												A2(
+												_elm_lang$html$Html$span,
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$class('card-title')
+													]),
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html$text(voca.spell),
+														voca.lab ? A2(
+														_elm_lang$html$Html$div,
+														_elm_lang$core$Native_List.fromArray(
+															[]),
+														_elm_lang$core$Native_List.fromArray(
+															[
+																_elm_lang$html$Html$text('*')
+															])) : A2(
+														_elm_lang$html$Html$div,
+														_elm_lang$core$Native_List.fromArray(
+															[]),
+														_elm_lang$core$Native_List.fromArray(
+															[]))
+													]))
+											])),
+										A2(
+										_elm_lang$html$Html$div,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('pure-u-15-24')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(
+												_elm_lang$html$Html$p,
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$class('text-darken-2')
+													]),
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html$text(voca.des)
+													]))
 											]))
 									])),
 								A2(
 								_elm_lang$html$Html$div,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html_Attributes$class('pure-u-15-24')
+										_elm_lang$html$Html_Attributes$class('card-action')
 									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(
-										_elm_lang$html$Html$p,
-										_elm_lang$core$Native_List.fromArray(
-											[]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html$text(voca.des)
-											]))
-									]))
-							])),
-						A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('card-action')
-							]),
-						A2(
-							_elm_lang$core$List$map,
-							function (x) {
-								return A2(
-									_elm_lang$html$Html$div,
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_elm_lang$html$Html_Attributes$class('chip')
-										]),
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_elm_lang$html$Html$text(x)
-										]));
-							},
-							voca.root))
+								A2(
+									_elm_lang$core$List$map,
+									function (x) {
+										return A2(
+											_elm_lang$html$Html$div,
+											_elm_lang$core$Native_List.fromArray(
+												[
+													_elm_lang$html$Html_Attributes$class('chip')
+												]),
+											_elm_lang$core$Native_List.fromArray(
+												[
+													_elm_lang$html$Html$text(x)
+												]));
+									},
+									voca.root))
+							]))
 					]))
 			]));
 };
@@ -9236,6 +9293,92 @@ var _user$project$Main$myfooter = A2(
 						]))
 				]))
 		]));
+var _user$project$Main$queryResult$ = function (content) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('pure-g')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('pure-u-1-12')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('pure-u-5-6')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('row')
+							]),
+						A2(_elm_lang$core$List$map, _user$project$Main$vocaViewC, content.result))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('pure-u-1-12')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[]))
+			]));
+};
+var _user$project$Main$queryResult = function (content) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('row')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('col s1')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('col s10')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('row')
+							]),
+						A2(_elm_lang$core$List$map, _user$project$Main$vocaViewC, content.result))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('col s1')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[]))
+			]));
+};
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
 	_0: {
@@ -9245,6 +9388,32 @@ var _user$project$Main$init = {
 	},
 	_1: _elm_lang$core$Platform_Cmd$none
 };
+var _user$project$Main$evilIcons = A2(
+	_elm_lang$html$Html$div,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A3(
+			_elm_lang$html$Html$node,
+			'link',
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$rel('stylesheet'),
+					_elm_lang$html$Html_Attributes$href('https://cdn.jsdelivr.net/evil-icons/1.8.0/evil-icons.min.css')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[])),
+			A3(
+			_elm_lang$html$Html$node,
+			'script',
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$src('https://cdn.jsdelivr.net/evil-icons/1.8.0/evil-icons.min.js')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[]))
+		]));
 var _user$project$Main$imports = _elm_lang$core$Native_List.fromArray(
 	['https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css', 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css']);
 var _user$project$Main$styleSheet = A2(
@@ -9353,52 +9522,10 @@ var _user$project$Main$view = function (content) {
 										_user$project$Main$myStyle
 									]),
 								_elm_lang$core$Native_List.fromArray(
-									[])),
-								A2(
-								_elm_lang$html$Html$label,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$for('query')
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html$text('Serci')
-									]))
+									[]))
 							]))
 					])),
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('pure-g')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('pure-u-1-12')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[])),
-						A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('pure-u-11-12')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(
-								_elm_lang$html$Html$div,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('row')
-									]),
-								A2(_elm_lang$core$List$map, _user$project$Main$vocaViewC, content.result))
-							]))
-					])),
+				_user$project$Main$queryResult(content),
 				_user$project$Main$myfooter
 			]));
 };

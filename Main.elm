@@ -18,11 +18,23 @@ imports =
     , "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css"
       -- , "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"
       -- , "https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+      -- , "https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.3.2/css/simple-line-icons.css"
     ]
 
 
 styleSheet =
     Css.stylesheet imports []
+
+
+evilIcons =
+    div []
+        [ node "link"
+            [ rel "stylesheet", href "https://cdn.jsdelivr.net/evil-icons/1.8.0/evil-icons.min.css" ]
+            []
+        , node "script"
+            [ src "https://cdn.jsdelivr.net/evil-icons/1.8.0/evil-icons.min.js" ]
+            []
+        ]
 
 
 main =
@@ -82,19 +94,31 @@ view content =
             -- [ class "pure-form" ]
             [ div [ class "input-field " ]
                 [ input [ id "query", placeholder "Texto de serci ", onInput NewContent, myStyle {- , class "pure-input-rounded" -} ] []
-                , label
-                    [ for "query" ]
-                    [ text "Serci" ]
                 ]
             ]
+        , queryResult content
           -- , button [ onClick Search ] [ text "serci" ]
           -- , div [ myStyle ] [ text (String.reverse content.query) ]
-        , div [ class "pure-g" ]
-            [ div [ class "pure-u-1-12" ] []
-            , div [ class "pure-u-11-12" ] [ div [ class "row" ] (List.map vocaViewC content.result) ]
-            ]
           -- , trialView (decodeString dicDecoder """ [{"lab":false,"root":[],"fix":[],"spell":"beta","descript":"2.1  2016-7-24"},{"lab":false,"root":[],"fix":[],"spell":"A","descript":"prep. 到...；去...；给...；对...；对...（的利益有影响）"}] """)
         , myfooter
+        ]
+
+
+queryResult : Model -> Html Msg
+queryResult content =
+    div [ class "row" ]
+        [ div [ class "col s1" ] []
+        , div [ class "col s10" ] [ div [ class "row" ] (List.map vocaViewC content.result) ]
+        , div [ class "col s1" ] []
+        ]
+
+
+queryResult' : Model -> Html Msg
+queryResult' content =
+    div [ class "pure-g" ]
+        [ div [ class "pure-u-1-12" ] []
+        , div [ class "pure-u-5-6" ] [ div [ class "row" ] (List.map vocaViewC content.result) ]
+        , div [ class "pure-u-1-12" ] []
         ]
 
 
@@ -159,18 +183,28 @@ vocaView voca =
 
 vocaViewC : Vocabulary -> Html Msg
 vocaViewC voca =
-    div [ class "col s6" ]
-        [ div [ class "card blue-grey darken-1 z-depth-1" ]
-            [ div [ class "pure-g card-content white-text" ]
-                [ div [ class "pure-u-9-24" ] [ span [ class "card-title" ] [ {- i [ class "zmdi zmdi-invert-colors zmdi-hc-fw zmdi-hc-rotate-90" ] [], -} text voca.spell ] ]
-                , div [ class "pure-u-15-24" ]
-                    [ -- i [ class "large material-icons" ] [ text "label_outline" ]
-                      p [] [ text voca.des ]
+    div [ class "col s6 " ]
+        [ blockquote [ class "red lighten-2" ]
+            [ div [ class "card blue-grey darken-1 hoverable" ]
+                [ div [ class "pure-g card-content white-text" ]
+                    [ div [ class "pure-u-9-24" ]
+                        [ span [ class "card-title" ]
+                            [ text voca.spell
+                            , if voca.lab then
+                                div [] [ text "*" ]
+                              else
+                                div [] []
+                            ]
+                        ]
+                    , div [ class "pure-u-15-24" ]
+                        [ -- i [ class "large material-icons" ] [ text "label_outline" ]
+                          p [ class "text-darken-2" ] [ text voca.des ]
+                        ]
                     ]
+                , div
+                    [ class "card-action" ]
+                    (List.map (\x -> div [ class "chip" ] [ text x ]) voca.root)
                 ]
-            , div
-                [ class "card-action" ]
-                (List.map (\x -> div [ class "chip" ] [ text x ]) voca.root)
             ]
         ]
 
@@ -227,7 +261,27 @@ queryWords word =
 
 queryW : String -> List Vocabulary -> List Vocabulary
 queryW word vocas =
-    List.filter (\voca -> String.contains word voca.spell || String.contains word voca.des) vocas
+    let
+        qwords =
+            String.words (String.toLower word)
+
+        relateCheck : Vocabulary -> Bool
+        relateCheck voc =
+            List.all (\w -> String.contains w (String.toLower voc.spell) || String.contains w voc.des) qwords
+
+        firstWord : List Vocabulary
+        firstWord =
+            List.filter (\voca -> String.startsWith (String.toLower word) (String.toLower voca.spell)) vocas
+
+        unfirstWord : List Vocabulary
+        unfirstWord =
+            List.filter (\voca -> not (String.startsWith (String.toLower word) (String.toLower voca.spell))) vocas
+
+        relateWord : List Vocabulary
+        relateWord =
+            List.filter (\voca -> relateCheck voca) unfirstWord
+    in
+        List.append firstWord relateWord
 
 
 jsonDic =
