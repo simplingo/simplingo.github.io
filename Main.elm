@@ -78,7 +78,15 @@ view : Model -> Html Msg
 view content =
     div []
         [ Css.style [ Html.Attributes.scoped True ] styleSheet
-        , Html.form [ class "pure-form" ] [ input [ placeholder "Texto de serci ", onInput NewContent, myStyle, class "pure-input-rounded" ] [] ]
+        , Html.form []
+            -- [ class "pure-form" ]
+            [ div [ class "input-field " ]
+                [ input [ id "query", placeholder "Texto de serci ", onInput NewContent, myStyle {- , class "pure-input-rounded" -} ] []
+                , label
+                    [ for "query" ]
+                    [ text "Serci" ]
+                ]
+            ]
           -- , button [ onClick Search ] [ text "serci" ]
           -- , div [ myStyle ] [ text (String.reverse content.query) ]
         , div [ class "pure-g" ]
@@ -86,38 +94,43 @@ view content =
             , div [ class "pure-u-11-12" ] (List.map vocaViewC content.result)
             ]
           -- , trialView (decodeString dicDecoder """ [{"lab":false,"root":[],"fix":[],"spell":"beta","descript":"2.1  2016-7-24"},{"lab":false,"root":[],"fix":[],"spell":"A","descript":"prep. 到...；去...；给...；对...；对...（的利益有影响）"}] """)
-        , footer
-            [ class "page-footer" ]
+        , myfooter
+        ]
+
+
+myfooter : Html Msg
+myfooter =
+    footer
+        [ class "page-footer" ]
+        [ div
+            [ class "container" ]
             [ div
-                [ class "container" ]
+                [ class "row" ]
                 [ div
-                    [ class "row" ]
-                    [ div
-                        [ class "col l6 s12" ]
-                        [ h5
-                            [ class "white-text" ]
-                            [ text "关于" ]
-                        , p [ class "grey-text text-lighten-4" ] [ text "Simplingo is a simple language." ]
-                        ]
-                    , div
-                        [ class "col l4 offset-l2 s12" ]
-                        [ h5 [ class "white-text" ] [ text "Extra Links" ]
-                        , ul []
-                            [ li [] [ a [ class "grey-text text-lighten-3", href gramer ] [ text "Gramer" ] ]
-                            , li [] [ a [ class "grey-text text-lighten-3", href simpleGramer ] [ text "Simple Gramer" ] ]
-                            , li [] [ a [ class "grey-text text-lighten-3", href docDic ] [ text "Dictionary" ] ]
-                            , li [] [ a [ class "grey-text text-lighten-3", href jsonDic ] [ text "Raw data" ] ]
-                            ]
+                    [ class "col l6 s12" ]
+                    [ h5
+                        [ class "white-text" ]
+                        [ text "关于" ]
+                    , p [ class "grey-text text-lighten-4" ] [ text "Simplingo is a simple language." ]
+                    ]
+                , div
+                    [ class "col l4 offset-l2 s12" ]
+                    [ h5 [ class "white-text" ] [ text "Extra Links" ]
+                    , ul []
+                        [ li [] [ a [ class "grey-text text-lighten-3", href gramer ] [ text "Gramer" ] ]
+                        , li [] [ a [ class "grey-text text-lighten-3", href simpleGramer ] [ text "Simple Gramer" ] ]
+                        , li [] [ a [ class "grey-text text-lighten-3", href docDic ] [ text "Dictionary" ] ]
+                        , li [] [ a [ class "grey-text text-lighten-3", href jsonDic ] [ text "Raw data" ] ]
                         ]
                     ]
                 ]
-            , div
-                [ class "footer-copyright" ]
-                [ div
-                    [ class "container" ]
-                    [ text "© 2016 Simplingo"
-                    , a [ class "grey-text text-lighten-4 right", href "#!" ] [ text "More Details" ]
-                    ]
+            ]
+        , div
+            [ class "footer-copyright" ]
+            [ div
+                [ class "container" ]
+                [ text "© 2016 Simplingo"
+                , a [ class "grey-text text-lighten-4 right", href "#!" ] [ text "More Details" ]
                 ]
             ]
         ]
@@ -146,7 +159,7 @@ vocaView voca =
 
 vocaViewC : Vocabulary -> Html Msg
 vocaViewC voca =
-    div [ class "card blue-grey darken-1" ]
+    div [ class "card blue-grey darken-1 z-depth-1" ]
         [ div [ class "pure-g card-content white-text" ]
             [ div [ class "pure-u-9-24" ] [ span [ class "card-title" ] [ {- i [ class "zmdi zmdi-invert-colors zmdi-hc-fw zmdi-hc-rotate-90" ] [], -} text voca.spell ] ]
             , div [ class "pure-u-15-24" ]
@@ -174,7 +187,7 @@ myStyle =
         [ ( "width", "100%" )
           -- , ( "height", "80px" )
         , ( "padding", "10px 0" )
-          -- , ( "font-size", "2em" )
+        , ( "font-size", "2em" )
         , ( "text-align", "center" )
         ]
 
@@ -224,8 +237,8 @@ simpleGramer =
 
 
 gramer =
-    "https://simplingo.github.io/gramerBeta2.1.pdf"
+    "https://simplingo.github.io/doc/gramerBeta2.1.pdf"
 
 
 docDic =
-    "https://simplingo.github.io/dicBeta2.1.doc"
+    "https://simplingo.github.io/doc/dicBeta2.1.doc"
