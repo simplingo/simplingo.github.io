@@ -153,7 +153,7 @@ myfooter =
             [ class "footer-copyright" ]
             [ div
                 [ class "container" ]
-                [ text "© 2016 Simplingo"
+                [ text "© 2016 Simplingo Beta2.2"
                 , a [ class "grey-text text-lighten-4 right", href "#!" ] [ text "More Details" ]
                 ]
             ]
@@ -285,7 +285,7 @@ queryW word vocas =
 
 
 jsonDic =
-    "https://simplingo.github.io/Beta2.1.json"
+    "https://simplingo.github.io/Beta2.2.json"
 
 
 simpleGramer =
@@ -297,4 +297,4 @@ gramer =
 
 
 docDic =
-    "https://simplingo.github.io/doc/dicBeta2.1.doc"
+    "https://simplingo.github.io/doc/Beta2.2.doc"
