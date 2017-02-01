@@ -63,7 +63,7 @@ renderDictionary (Dictionary dic) =
     -- [R.p [] [R.text dic.spell] , R.p' $ [R.q' [R.text dic.meanning]] <> r]
     R.blockquote [ RP.className "red lighten-2 center-aligh" ]
       [ R.div [ RP.className $ "card " <> reColor <> " darken-1 hoverable" ] $
-          [ R.div [ RP.className "pure-g card-content white-text" ]
+          [ R.div [ RP.className "card-content white-text" ]
             [ R.span [ RP.className "card-title" ] [ R.text dic.spell ]
             , R.p [ RP.className "text-darken-2" ] [ R.text dic.meanning ]
             ]

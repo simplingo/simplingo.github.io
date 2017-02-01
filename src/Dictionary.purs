@@ -4,7 +4,7 @@ module Dictionary
 , queryDict
 ) where
 
-import Prelude (class Show, Unit, bind, pure, show, ($), (<>), (=<<))
+import Prelude (class Show, Unit, bind, pure, show, ($), (<>), (=<<), (>>=), (==))
 import Data.Foreign (Foreign)
 import Data.Foreign.Class (class IsForeign, read, readProp)
 
@@ -60,7 +60,7 @@ instance dictionaryForeig :: IsForeign Dictionary where
     m <- readProp "Explanation" raw
     pure $ Dictionary
       { spell: s
-      , root:  unUndefined r
+      , root:  unUndefined r >>= (\x-> if x == "" then Nothing else pure x)
       , meanning: m
       }
 

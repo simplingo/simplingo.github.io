@@ -24,7 +24,7 @@ function (filename, cb)
     var workbook = XLSX.read(bstr, {type:"binary"});
 
     /* DO SOMETHING WITH workbook HERE */
-    //console.log((XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
+    console.log((XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
     cb((XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])))();
   }
 
