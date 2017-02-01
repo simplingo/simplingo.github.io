@@ -3,7 +3,7 @@ Simple simplingo dictionary
 
 ### Usages:
 - translate from and to simplingo
-- roots combined query
+- root combined query
 
 ### About:
-- data generated from Beta2.1.doc
+- data generated from Original Dictionary xlxs File
