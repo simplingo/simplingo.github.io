@@ -23,7 +23,7 @@ import DOM.HTML.Window (document) as DOM
 import DOM.Node.NonElementParentNode (getElementById) as DOM
 import DOM.Node.Types (ElementId(ElementId)) as DOM
 import React (createFactory, ReactElement) as R
-import React.DOM (a, blockquote, div, footer, form', h5, header', input, label, li, main', nav', p, span, text, ul) as R
+import React.DOM (a, blockquote, div, footer, form', h5, header', input, label, li, main', nav', p, text, ul) as R
 import React.DOM.Props as RP
 
 import Dictionary (Dictionary(..), queryDict)
@@ -54,22 +54,74 @@ renderDictionary (Dictionary dic) =
   let
     r = case dic.root of
       Nothing -> []
-      Just rr -> [R.div [ RP.className "card-action" ]
-                     [R.div [ RP.className "chip" ] [R.text rr]]]
+      Just rr -> [ R.div [ RP.className "card-action" ]
+                     [ R.a [ RP.className "" ] [R.text rr]
+                     ]
+                 ]
+
     reColor = case charAt 0 dic.spell of
-      Just '/' -> "grey"
-      _ -> "blue-grey"
+      Just '/' -> "grey darken-1"
+      _ -> "grey darken-1"-- "blue-grey"
+
+    ch = R.div [RP.className $ "btn " <> colorPerfer dic.chara] [R.text dic.chara]
+
+    lv = case dic.level of
+      Nothing -> []
+      Just l -> singleton $ R.div [RP.className $ "btn-floating halfway-fab center-align " <> levelColor l] [R.text l]
+
   in
     -- [R.p [] [R.text dic.spell] , R.p' $ [R.q' [R.text dic.meanning]] <> r]
     R.blockquote [ RP.className "red lighten-2 center-aligh" ]
-      [ R.div [ RP.className $ "card " <> reColor <> " darken-1 hoverable" ] $
-          [ R.div [ RP.className "card-content white-text" ]
-            [ R.span [ RP.className "card-title" ] [ R.text dic.spell ]
-            , R.p [ RP.className "text-darken-2" ] [ R.text dic.meanning ]
-            ]
+      [ R.div [ RP.className $ "card " <> reColor <> " hoverable" ] $
+          [ R.div [ RP.className "card-content" ]
+              [ R.div [ RP.className "row" ] [ R.div [RP.className "flow-text white-text col s5"] [R.text dic.spell], R.div [RP.className "right !important"] [ch]]
+              , R.div [ RP.className "" ] <<< singleton $ renderMeanings dic.meanings
+              ]
+          , R.div [ RP.className "card-image" ] lv
           ] <> r
       ]
 
+colorPerfer :: String -> String
+colorPerfer characteristic = case characteristic of
+  "名词" -> "brown lighten-2"
+  "动词" -> "orange lighten-2"
+  "修饰词" -> "red lighten-2"
+  "介词" -> "lime lighten-2"
+  "连词" -> "teal lighten-2"
+  "代词" -> "pink lighten-2"
+  "词缀" -> "indigo lighten-2"
+  "小品副词" -> "purple lighten-2"
+  _ -> "amber lighten-2 text-darken-2"
+
+
+levelColor :: String -> String
+levelColor lv = case lv of
+  "1" -> "grey lighten-5" <> " black-text"
+  "2" -> "grey lighten-4" <> " black-text"
+  "3" -> "grey lighten-3" <> " black-text"
+  "4" -> "grey lighten-2" <> " black-text"
+  "5" -> "grey lighten-1" <> " black-text"
+  "6" -> "grey"
+  "7" -> "grey darken-1"
+  "8" -> "grey darken-2"
+  "9" -> "grey darken-3"
+  "10" -> "grey darken-4"
+  _ -> "transparent"
+
+renderMeanings :: Array {meaning :: String, example :: Maybe String} -> R.ReactElement
+renderMeanings ms =
+  let
+    renderMeaning m = R.li [RP.className "section"]
+      [ R.div [RP.className "white-text"] [R.div [RP.className ""] [R.text m.meaning]]
+      , R.p [RP.className "text-darken-2"] $ renderExample m.example
+      ]
+
+    renderExample e = case e of
+      Nothing -> []
+      Just ee -> [R.text ee]
+
+  in
+    R.ul [RP.className "", RP.property ""] $ renderMeaning <$> ms
 
 myFooter :: R.ReactElement -> R.ReactElement
 myFooter links =

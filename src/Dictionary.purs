@@ -4,24 +4,20 @@ module Dictionary
 , queryDict
 ) where
 
-import Prelude (class Show, Unit, bind, pure, show, ($), (<>), (=<<), (>>=), (==))
-import Data.Foreign (Foreign)
-import Data.Foreign.Class (class IsForeign, read, readProp)
-
-import Data.Generic (class Generic, gShow)
-import Data.Maybe (Maybe(..))
-import Data.Foreign.Undefined (readUndefined, unUndefined)
-import Data.Array (filter, partition)
-import Data.Function.Uncurried (Fn2, runFn2)
+import Data.Foreign.NullOrUndefined
 import Control.Monad.Aff (Aff, makeAff)
-import Data.Either (Either(..))
-import Data.String (Pattern(..), charAt, contains, indexOf)
-
 import Control.Monad.Eff (Eff)
-
 import Control.Monad.Eff.Exception (error)
 import Control.Monad.Error.Class (throwError)
 import Control.Monad.Except (runExcept)
+import Data.Array (filter, index, mapWithIndex, partition)
+import Data.Either (Either(..))
+import Data.Foreign (Foreign)
+import Data.Foreign.Class (class IsForeign, read, readProp)
+import Data.Function.Uncurried (Fn2, runFn2)
+import Data.Maybe (Maybe(..))
+import Data.String (Pattern(..), charAt, contains, indexOf, joinWith, split, toLower)
+import Prelude (class Show, Unit, bind, pure, show, ($), (<>), (=<<), (==), (>>=), (<$>))
 
 
 
@@ -44,29 +40,44 @@ readDictionary filename = do
 data Dictionary = Dictionary
   { spell :: String
   , root :: Maybe String
-  , meanning :: String
+  , meanings :: Array {meaning :: String, example :: Maybe String}
+  , level :: Maybe String
+  , chara :: String
   }
 
-derive instance genericDictionary :: Generic Dictionary
+--derive instance genericDictionary :: Generic Dictionary
 
 instance dictionaryShow :: Show Dictionary where
-  show = gShow
+  show (Dictionary d) = d.spell
 
-instance dictionaryForeig :: IsForeign Dictionary where
+instance dictionaryForeign :: IsForeign Dictionary where
   read raw = do
     s <- readProp "Simplingo" raw
     -- r <- readUndefined (readProp "词根") raw
-    r <- readUndefined read =<< readProp "Root" raw
-    m <- readProp "Explanation" raw
+    r <- readNullOrUndefined read =<< readProp "词根" raw
+    m <- readProp "词义" raw
+    e <- readNullOrUndefined read =<< readProp "例句" raw
+    l <- readNullOrUndefined read =<< readProp "等级" raw
+    c' <- readNullOrUndefined read =<< readProp "词性" raw
+    let
+      ms = split (Pattern "\n") m
+      es = split (Pattern "\n") <$> unNullOrUndefined e
+      mes = mapWithIndex (\i m1 -> {meaning: m1, example: es >>= (\x -> index x i)}) ms
+      c = case unNullOrUndefined c' of
+        Nothing -> "词缀"
+        Just cc -> cc
     pure $ Dictionary
       { spell: s
-      , root:  unUndefined r >>= (\x-> if x == "" then Nothing else pure x)
-      , meanning: m
+      , root:  unNullOrUndefined r >>= (\x-> if x == "" then Nothing else pure x)
+      , meanings: mes
+      , level: unNullOrUndefined l
+      , chara: c
       }
 
 queryDict :: String -> Array Dictionary -> Array Dictionary
-queryDict q dict = p1.yes <> p2.yes <> p3.yes <> p4 where
-  inMeanning (Dictionary d) = contains (Pattern q) d.meanning
+queryDict q' dict = p1.yes <> p2.yes <> p3.yes <> p4 where
+  q = toLower q'
+  inMeanning (Dictionary d) = contains (Pattern q) $ joinWith "\n" $ (\x -> x.meaning) <$> d.meanings
   inSpell (Dictionary d) = contains (Pattern q) d.spell
   inFirstSpell (Dictionary d) = case indexOf (Pattern q) d.spell of
     Nothing -> false
